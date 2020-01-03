@@ -3,13 +3,13 @@
     <h2>Currency Converter</h2>
     <div class="main-currency">
         <label for="currency">Euro:</label>
-        <input type="text" id="euro" v-model="euro" >
+        <input @keypress.enter="convertedCur" type="text" id="euro" v-model="euro" >
     </div>
     <form>
       <!-- <div class="currency-box" v-for="(cur, index) in currencies" :key="index"> -->
       <div class="currency-box">
         <label for="currency">Dollar:</label>
-        <input type="text" id="dollar" placeholder="current" :value="current">
+        <input type="text" id="dollar" placeholder="dollar" :value="0">
         <button @click="convertedCur()">Convert</button>
       </div>
       <div class="currency-box">
@@ -33,6 +33,9 @@
         <button @click="convertedCur()">Convert</button>
       </div>
     </form>
+    <div>
+      <button><router-link :to="{ name: 'NewConverter' }">Radio Converter</router-link></button>
+    </div>
   </div>
 </template>
 
@@ -40,12 +43,12 @@
 import axios from 'axios';
 
 export default {
-  id: 'HelloWorld',
+  name: 'HelloWorld',
   data () {
     return {
       currencies: {},
       current: 0,
-      euro: 0
+      euro: 0,
     }
   },
   mounted() {
@@ -60,8 +63,19 @@ export default {
   },
   methods: {
     convertedCur() {
+      let dollar = this.euro * 1.11;
+      document.getElementById('dollar').value = dollar.toFixed(2); 
+      document.getElementById('yen').value = this.euro * 122;
+      document.getElementById('pounds').value = this.euro * 0.85;
+      document.getElementById('zloty').value = this.euro * 4.25;
+      document.getElementById('real').value = this.euro * 4.51;
+    }
+  },
+  computed: {
+    dollar() {
       let dollar = document.getElementById('dollar').value;
-      this.current = dollar * euro;
+      dollar = this.euro * 1.11;
+      return this.currency.dollar = dollar; 
     }
   }
 }

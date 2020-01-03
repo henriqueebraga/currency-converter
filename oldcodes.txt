@@ -1,0 +1,118 @@
+<template>
+  <div class="hello">
+    <h2>Currency Converter</h2>
+    <div class="main-currency">
+        <label for="currency">Euro:</label>
+        <input type="text" id="euro" v-model="euro" >
+    </div>
+    <div class="row">
+        <div id="checkboxes">
+            <label>Dollar</label>
+            <input type="checkbox" value="dollar" name="current-currency" v-model="data.categories" />
+        </div>
+        <div id="checkboxes">
+            <label>Yen</label>
+            <input type="checkbox" value="yen" name="current-currency" v-model="data.categories" />
+        </div>
+        <div id="checkboxes">
+            <label>Pounds</label>
+            <input type="checkbox" value="pounds" name="current-currency" v-model="data.categories" />
+        </div>
+        <div id="checkboxes">
+            <label>Zloty</label>
+            <input type="checkbox" value="zloty" name="current-currency" v-model="data.categories" />
+        </div>
+        <div id="checkboxes">
+            <label>Real</label>
+            <input type="checkbox" value="real" name="current-currency" v-model="data.categories" />
+        </div>
+    </div>    
+    <ul>
+        <li v-for="category in data.categories" :key="category">Your conversion in {{ category }} is <span>{{ dollarValue }}</span></li>
+    </ul>
+    <button @click="convertCurrency">test</button>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  name: 'NewConverter',
+  data () {
+    return {
+      currencies: [],
+      euro: null,
+      result: [],
+      data: {
+          categories: []
+      }
+    }
+  },
+  mounted() {
+    axios.get('http://127.0.0.1:2000/currency')
+    .then((response) => {
+      this.currencies = response.data;
+    }).catch((err) => {
+      console.log(err);
+    })
+
+  },
+  methods: {
+      convertCurrency() {
+        console.log(document.querySelector('input[name="current-currency"]:checked').value);
+      }
+  },
+  computed: {
+    dollarValue() {
+        let checkedValue = document.querySelector('input[name="current-currency"]:checked');
+        if (checkedValue.value === 'dollar') {
+            let value = this.euro * 1.11;
+            return this.result = `$${value.toFixed(2)}`;
+        }
+    },
+    yenValue() {
+        let checkedValue = document.querySelector('input[name="current-currency"]:checked');
+        if (checkedValue.value === 'yen') {
+            let value = this.euro * 122;
+            return this.result = `$${value.toFixed(2)}`;
+        }
+    },
+    poundsValue() {
+        let checkedValue = document.querySelector('input[name="current-currency"]:checked');
+        if (checkedValue.value === 'pounds') {
+            let value = this.euro * 0.85;
+            return this.result = `$${value.toFixed(2)}`;
+        }
+    },
+    zlotyValue() {
+        let checkedValue = document.querySelector('input[name="current-currency"]:checked');
+        if (checkedValue.value === 'zloty') {
+            let value = this.euro * 4.25;
+            return this.result = `$${value.toFixed(2)}`;
+        }
+    },
+    realValue() {
+        let checkedValue = document.querySelector('input[name="current-currency"]:checked');
+        if (checkedValue.value === 'real') {
+            let value = this.euro * 4.52;
+            return this.result = `$${value.toFixed(2)}`;
+        }
+    },
+  }
+}
+</script>
+
+
+<style>
+.row {
+    display: flex;
+}
+#checkboxes input{
+    display: inline-block;
+    margin-right: 10px;
+}
+#checkboxes label {
+    display: inline-block;
+}
+</style>
